@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="C:/temp/tyrus-standalone-client-1.12.jar"/>
+	<classpathentry kind="lib" path="H:/projects/TemperatureScanner/json-simple-1.1.1.jar"/>
+	<classpathentry kind="lib" path="H:/projects/TemperatureScanner/joda-time-2.10.6-dist/joda-time-2.10.6/joda-time-2.10.6.jar"/>
+	<classpathentry kind="lib" path="H:/projects/TemperatureScanner/apache-commons-io/commons-io-2.7-bin/commons-io-2.7/commons-io-2.7.jar"/>
+	<classpathentry kind="lib" path="H:/projects/TemperatureScanner/apache-commons-io/commons-io-2.7-bin/commons-io-2.7/commons-io-2.7-sources.jar"/>
+	<classpathentry kind="lib" path="H:/projects/TemperatureScanner/joda-time-2.10.6-dist/joda-time-2.10.6/joda-time-2.10.6-sources.jar"/>
+	<classpathentry kind="lib" path="H:/projects/TemperatureScanner/commons-cli-1.4/commons-cli-1.4.jar"/>
+	<classpathentry kind="lib" path="H:/projects/TemperatureScanner/commons-cli-1.4/commons-cli-1.4-sources.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
