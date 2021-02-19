@@ -14,10 +14,11 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Base64;
+import java.util.Calendar;
+import java.util.Date;
 
 import javax.imageio.ImageIO;
 
-import org.joda.time.DateTime;
 import org.json.simple.JSONObject;
 
 class PrintPassJob2 implements Printable {
@@ -76,8 +77,13 @@ class PrintPassJob2 implements Printable {
 	        }
 
 			
-			DateTime today = new DateTime();
-			SimpleDateFormat formatter=new SimpleDateFormat("MM/dd/YYYY");
+			//DateTime today = new DateTime();
+	        Calendar todayCal = Calendar.getInstance();
+	        //todayCal.set(Calendar.YEAR, todayCal.get(Calendar.YEAR)-1); // Around 12/21/2021 Year started to be reported incorrectly in java
+	                                                                      // Bug turned out to be YYYY should have been yyyy
+	        Date today = todayCal.getTime();
+	        //Date today = Calendar.getInstance().getTime();
+			SimpleDateFormat formatter=new SimpleDateFormat("MM/dd/yyyy");
 			
 			String imageString = (String)data.get("signAvatar");
 			
@@ -87,8 +93,9 @@ class PrintPassJob2 implements Printable {
 					img = resizeImage(img, 50, 50);
 					g.drawImage(img, 10, 10,  null);
 			}
-			/* Now we perform our rendering */
-			g.drawString("Dt: "+formatter.format(today.toDate()), 65, 20);
+			/* Now we perform our rendering */			
+			g.drawString("Dt: "+formatter.format(today), 65, 20);
+			System.out.println("today3: "+formatter.format(today));
 			g.drawString("Temp: "+((double)Math.round(temperature*10))/10,65,32);
 			
 			g.setFont(new Font("Calibri", Font.BOLD, 35));

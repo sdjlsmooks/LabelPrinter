@@ -2,6 +2,7 @@ package com.sdjl;
 
 import java.awt.print.PageFormat;
 import java.awt.print.Paper;
+import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.io.IOException;
@@ -15,6 +16,7 @@ import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.jws.WebService;
 import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
 import javax.print.attribute.HashPrintRequestAttributeSet;
@@ -35,7 +37,6 @@ import org.apache.commons.cli.Options;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-
 
 @ClientEndpoint
 public class WSClient {
@@ -97,13 +98,30 @@ public class WSClient {
 
 	private void printPass(JSONObject jo) {
 		try {
-			PrintPassJob2 passable = new PrintPassJob2(jo);
+			
 			PrinterJob job = PrinterJob.getPrinterJob();
-		
 		    PageFormat pf = job.defaultPage();
 		    Paper paper = pf.getPaper();
-		    paper.setSize(1.0 * 72, 3.47 * 72);
-		    paper.setImageableArea(0.1 * 72, 0.1 * 72, 1.0 * 72, 3.47 * 72);
+			Printable passable = new PrintPassJob2(jo);
+			PrintRequestAttributeSet attributes = new HashPrintRequestAttributeSet();
+			boolean zdPrinter = printer.contains("ZD420");
+			if (!zdPrinter) {
+				passable = new PrintPassJob2(jo);		
+			    paper.setSize(1.0 * 72, 3.47 * 72);
+			    paper.setImageableArea(0.1 * 72, 0.1 * 72, 1.0 * 72, 3.47 * 72);					
+				attributes.add(OrientationRequested.LANDSCAPE);
+				PrinterResolution pr = new PrinterResolution(313, 313, ResolutionSyntax.DPI);
+				attributes.add(pr);
+			}
+			else {
+				passable = new PrintPassZebraJob(jo);
+			    paper.setSize((3.0*72), (1.12 * 72));
+			    paper.setImageableArea(0, 0, 3.0 * 72, 1.00 * 72);
+				PrinterResolution pr = new PrinterResolution(203, 203, ResolutionSyntax.DPI);
+				attributes.add(OrientationRequested.PORTRAIT);
+				attributes.add(pr);
+			}
+
 		    pf.setPaper(paper);
 		
 			/* Create an array of PrintServices */			
@@ -120,12 +138,8 @@ public class WSClient {
 					break;
 				}
 			}
-	
-	
-			PrintRequestAttributeSet attributes = new HashPrintRequestAttributeSet();
-			attributes.add(OrientationRequested.LANDSCAPE);
-			PrinterResolution pr = new PrinterResolution(313, 313, ResolutionSyntax.DPI);
-			attributes.add(pr);
+		
+
 			job.setPrintService(labelPrinter);
 			job.setPrintable(passable,pf);
 			//job.setPrintable(passable);			
